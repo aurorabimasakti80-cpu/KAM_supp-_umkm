@@ -164,34 +164,40 @@
       font-size: 10px; 
       font-weight: 800; 
       letter-spacing: .05em;
-      z-index: 2;
+      z-index: 3;
     }
+    
+    /* LIVE PREVIEW IFRAME STYLES */
     .portfolio-preview { 
       margin-bottom: 16px; 
       border-radius: 12px; 
       overflow: hidden; 
       border: 1px solid #e4e8df; 
       background: #f8faf5; 
-      aspect-ratio: 4/3; 
-      display: grid; 
-      place-items: center;
+      aspect-ratio: 16/10; 
       position: relative;
     }
-    .preview-placeholder { 
-      text-align: center; 
-      color: var(--muted); 
-      padding: 20px; 
+    .preview-frame {
+      position: absolute;
+      top: 0; left: 0;
+      width: 1280px; height: 800px;
+      transform-origin: 0 0;
+      pointer-events: none;
     }
-    .preview-placeholder span { 
-      display: block; 
-      font-weight: 700; 
-      color: var(--ink); 
-      font-size: 12px; 
-      margin-bottom: 4px; 
+    .preview-frame iframe {
+      width: 100%; height: 100%; border: 0;
     }
-    .preview-placeholder small { 
-      font-size: 10px; 
+    .preview-overlay {
+      position: absolute; inset: 0;
+      background: rgba(22,37,30,.6);
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 13px;
+      opacity: 0; transition: opacity .2s;
+      text-decoration: none;
     }
+    .portfolio-preview:hover .preview-overlay { opacity: 1; }
+
     .portfolio-card h3 { 
       font-size: 16px; 
       margin: 0 0 6px; 
@@ -384,10 +390,10 @@
           <article class="portfolio-card">
             <div class="portfolio-badge">Rp500.000</div>
             <div class="portfolio-preview">
-              <div class="preview-placeholder">
-                <span>Preview Website</span>
-                <small>Paket Mulai</small>
+              <div class="preview-frame">
+                <iframe src="https://aurorabimasakti80-cpu.github.io/Demo_web-500K/" loading="lazy" title="Preview Paket Mulai"></iframe>
               </div>
+              <a href="https://aurorabimasakti80-cpu.github.io/Demo_web-500K/" target="_blank" rel="noopener" class="preview-overlay">Buka Web Demo ↗</a>
             </div>
             <h3>Paket Mulai</h3>
             <p>Website profil sederhana untuk usaha yang baru mulai go online.</p>
@@ -398,10 +404,10 @@
           <article class="portfolio-card">
             <div class="portfolio-badge" style="background: var(--green); color: white;">Rp1.000.000</div>
             <div class="portfolio-preview">
-              <div class="preview-placeholder">
-                <span>Preview Website</span>
-                <small>Paket Tumbuh</small>
+              <div class="preview-frame">
+                <iframe src="https://aurorabimasakti80-cpu.github.io/Demo-Paket-1juta_Web-CCTV_Solo/" loading="lazy" title="Preview Paket Tumbuh"></iframe>
               </div>
+              <a href="https://aurorabimasakti80-cpu.github.io/Demo-Paket-1juta_Web-CCTV_Solo/" target="_blank" rel="noopener" class="preview-overlay">Buka Web Demo ↗</a>
             </div>
             <h3>Paket Tumbuh</h3>
             <p>Website multi-halaman untuk bisnis yang ingin tampil lebih profesional.</p>
@@ -412,10 +418,10 @@
           <article class="portfolio-card">
             <div class="portfolio-badge" style="background: var(--green-2); color: white;">Rp1.500.000</div>
             <div class="portfolio-preview">
-              <div class="preview-placeholder">
-                <span>Preview Website</span>
-                <small>Paket Berkembang</small>
+              <div class="preview-frame">
+                <iframe src="https://aurorabimasakti80-cpu.github.io/Paket-web-1.5-juta_BUMI-TERRA-ROASTERY-HEARTH-BAKEHOUSE/" loading="lazy" title="Preview Paket Berkembang"></iframe>
               </div>
+              <a href="https://aurorabimasakti80-cpu.github.io/Paket-web-1.5-juta_BUMI-TERRA-ROASTERY-HEARTH-BAKEHOUSE/" target="_blank" rel="noopener" class="preview-overlay">Buka Web Demo ↗</a>
             </div>
             <h3>Paket Berkembang</h3>
             <p>Website dengan katalog lengkap dan desain yang lebih detail.</p>
@@ -426,10 +432,10 @@
           <article class="portfolio-card">
             <div class="portfolio-badge" style="background: var(--lime); color: var(--ink);">Rp2.000.000</div>
             <div class="portfolio-preview">
-              <div class="preview-placeholder">
-                <span>Preview Website</span>
-                <small>Paket Maksimal</small>
+              <div class="preview-frame">
+                <iframe src="https://aurorabimasakti80-cpu.github.io/Paket-web-2-juta-Demo_Laras-/" loading="lazy" title="Preview Paket Maksimal"></iframe>
               </div>
+              <a href="https://aurorabimasakti80-cpu.github.io/Paket-web-2-juta-Demo_Laras-/" target="_blank" rel="noopener" class="preview-overlay">Buka Web Demo ↗</a>
             </div>
             <h3>Paket Maksimal</h3>
             <p>Solusi website lengkap dengan struktur konten yang disesuaikan kebutuhan.</p>
@@ -496,6 +502,19 @@
       button.setAttribute('aria-expanded', String(open));
     }));
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Script untuk menyesuaikan skala iframe agar pas di kotak preview
+    function scalePreviews() {
+      document.querySelectorAll('.portfolio-preview').forEach(box => {
+        const frame = box.querySelector('.preview-frame');
+        if (frame) {
+          frame.style.transform = `scale(${box.clientWidth / 1280})`;
+        }
+      });
+    }
+    window.addEventListener('resize', scalePreviews);
+    window.addEventListener('load', scalePreviews);
+    scalePreviews();
   </script>
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","spa":2}' crossorigin="anonymous"></script>
 </body>
